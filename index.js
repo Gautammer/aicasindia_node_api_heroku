@@ -57,6 +57,9 @@ app.use('/api/inquiry_students',require('./routes/inquiry_students'));
 
 app.use('/api/database_transfer',require('./routes/database_transfer'));
 
-app.listen(1000, () => {
-    console.log("Now listening on port 1000");
-}); 
+
+const PORT =  8080;
+app.listen(PORT, () => {
+  console.log(`App listening on port ${PORT}`);
+  console.log('Press Ctrl+C to quit.');
+});

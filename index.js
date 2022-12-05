@@ -1,3 +1,5 @@
+const functions = require("firebase-functions");
+
 const express = require("express");
 const app = express();
 const bodyParser = require('express');
@@ -57,9 +59,12 @@ app.use('/api/inquiry_students',require('./routes/inquiry_students'));
 
 app.use('/api/database_transfer',require('./routes/database_transfer'));
 
+//exports.app = functions.https.onRequest(app);
+/* app.listen(1000, () => {
+    console.log("Now listening on port 1000");
+});
+ */
 
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`App listening on port ${PORT}`);
-  console.log('Press Ctrl+C to quit.');
+app.listen(process.env.PORT || 3000, function(){
+  console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
 });

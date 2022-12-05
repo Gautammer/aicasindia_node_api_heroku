@@ -69,7 +69,7 @@ router.post('/update_result', (req, res) => {
 
 router.post('/directAdded_result', (req, res) => {
     let body = req.body;
-    connection.query(`SELECT * FROM RESULTS WHERE student_id = '${body.student_id}'`, function (err, result) {
+    connection.query(`SELECT * FROM results WHERE student_id = '${body.student_id}'`, function (err, result) {
         if (err) {
             res.json({
                 message: err.message,
@@ -77,7 +77,7 @@ router.post('/directAdded_result', (req, res) => {
             });
         } else {
             if (result.length) {
-                connection.query(`UPDATE RESULTS SET ? WHERE student_id = '${body.student_id}'`,body, function (err, result) {
+                connection.query(`UPDATE results SET ? WHERE student_id = '${body.student_id}'`,body, function (err, result) {
                     if (err) {
                         res.json({
                             message: err.message,

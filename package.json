@@ -1,27 +1,28 @@
 {
-  "name": "aicas_api_new",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "engines": {
-    "node": "18.X"
-  },
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
-    "start:dev": "nodemon index"
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+   
+    "start": "nodemon index",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
   "dependencies": {
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.0",
     "body-parser": "^1.20.1",
-    "cors": "^2.8.5", 
+    "cors": "^2.8.5",
     "express": "^4.18.2",
-    "mysql": "^2.18.1",
-    "nodemon": "^2.0.20"
+    "mysql": "^2.18.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.20"
-  }
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
 }

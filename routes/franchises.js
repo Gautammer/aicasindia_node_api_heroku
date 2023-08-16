@@ -130,53 +130,53 @@ router.get('/getAllFranchises_pagination', (req, res) => {
                 message: err.sqlMessage
             });
         } else {
-            if (result) {
-                const resultsPerPage = 10;
-                const numOfResults = result.length;
-                const numberOfPages = Math.ceil(numOfResults / resultsPerPage);
-                let page = req.query.page ? Number(req.query.page) : 1;
-                if (page > numberOfPages) {
-                    console.log('line 484', err)
-                    res.json({
-                        status: false,
-                        message: "No more data",
-                    });
-                } else if (page < 1) {
-                    console.log('line 490', err)
+            // if (result) {
+            //     const resultsPerPage = 10;
+            //     const numOfResults = result.length;
+            //     const numberOfPages = Math.ceil(numOfResults / resultsPerPage);
+            //     let page = req.query.page ? Number(req.query.page) : 1;
+            //     if (page > numberOfPages) {
+            //         console.log('line 484', err)
+            //         res.json({
+            //             status: false,
+            //             message: "No more data",
+            //         });
+            //     } else if (page < 1) {
+            //         console.log('line 490', err)
+            //         res.json({
+            //             status: false,
+            //             message: "No more data",
+            //         });
+            //     } else {
+            //         const startlingLimit = (page - 1) * resultsPerPage;
+            //   sql = `SELECT * FROM students`;
+            connection.query(`SELECT id, email, password, address, birthdate, center_address, center_city, center_name, center_state, center_zip, city, contact_no, father_name, propriter_name, mobile_no, nominee_name, nominee_relation, isDeleted, created_at, space, state, suggetion, total_computer, total_faculty, zip, registration_no, isApprove FROM franchises`, function (err, result) {
+
+                if (err) {
+                    console.log('line 503', err)
                     res.json({
                         status: false,
                         message: "No more data",
                     });
                 } else {
-                    const startlingLimit = (page - 1) * resultsPerPage;
-                    //   sql = `SELECT * FROM students`;
-                    connection.query(`SELECT id, email, password, address, birthdate, center_address, center_city, center_name, center_state, center_zip, city, contact_no, father_name, propriter_name, mobile_no, nominee_name, nominee_relation, isDeleted, created_at, space, state, suggetion, total_computer, total_faculty, zip, registration_no, isApprove FROM franchises  LIMIT ${startlingLimit},${resultsPerPage}`, function (err, result) {
-
-                        if (err) {
-                            console.log('line 503', err)
-                            res.json({
-                                status: false,
-                                message: "No more data",
-                            });
-                        } else {
-                            if (result) {
-                                let iterator = (page - 5) < 1 ? 1 : page - 5;
-                                let endingLink = (iterator + 9) <= numberOfPages ? (iterator + 9) : page + (numberOfPages);
-                                if (endingLink < (page + 4)) {
-                                    iterator -= (page + 4) - numberOfPages;
-                                }
-                                // res.render('index',{data:result,page,iterator,endingLink,numberOfPages});
-                                res.json({
-                                    status: true,
-                                    message: "got",
-                                    data: result
-                                });
-                            }
-                        }
-
-                    })
+                    // if (result) {
+                    //     let iterator = (page - 5) < 1 ? 1 : page - 5;
+                    //     let endingLink = (iterator + 9) <= numberOfPages ? (iterator + 9) : page + (numberOfPages);
+                    //     if (endingLink < (page + 4)) {
+                    //         iterator -= (page + 4) - numberOfPages;
+                    //     }
+                    // res.render('index',{data:result,page,iterator,endingLink,numberOfPages});
+                    res.json({
+                        status: true,
+                        message: "got",
+                        data: result
+                    });
+                    // }
                 }
-            }
+
+            })
+            //     }
+            // }
         }
     })
 })
@@ -294,13 +294,12 @@ router.get('/get_all_franchises_length', (req, res) => {
 //! searchbar api of franchises 
 router.post('/search_franchise', (req, res) => {
     let body = req.body;
-  
-    connection.query(`SELECT * FROM franchises WHERE isDeleted=false AND propriter_name LIKE '${body.string}' OR registration_no LIKE '${body.string}'  AND isDeleted=false `,body,  function (err, result) {
+
+    connection.query(`SELECT * FROM franchises WHERE isDeleted=false AND propriter_name LIKE '${body.string}' OR registration_no LIKE '${body.string}'  AND isDeleted=false `, body, function (err, result) {
         if (err) throw err;
-        var data=[];
-       // console.log(result)
-        for(i=0;i<result.length;i++)
-        {
+        var data = [];
+        // console.log(result)
+        for (i = 0; i < result.length; i++) {
             data.push(result[i]);
         }
         res.json({

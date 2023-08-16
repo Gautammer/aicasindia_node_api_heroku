@@ -3,10 +3,17 @@ const mysql = require('mysql');
 //! database
 //create here mysql connection
 const dbConnection = mysql.createConnection({ 
-    host:'localhost',
+/*     host:'localhost',
     user:'root',
     password:'',
-    database:'aicasindia'
+    database:'aicasindia' */
+
+    connectionLimit : 100, //important
+    host     : '217.21.84.154',
+    user     : 'u120121885_aicas',
+    password : 'Gautammer@2141',
+    database : 'u120121885_aicasindia',
+    debug    :  false
 });
 
 // const pool = mysql.createPool({

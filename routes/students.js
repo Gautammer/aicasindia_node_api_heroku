@@ -123,7 +123,7 @@ router.post('/delete', (req, res) => {
 //!get all studentsByFranchises
 router.post('/getStudents_byFranchises', (req, res) => {
     let body = req.body;
-    connection.query(`SELECT * FROM students WHERE is_exam_attended=true AND franchises_id = ?`, body.franchises_id, function (err, result) {
+    connection.query(`SELECT id, email, password, student_name, surname, address, gender, admission_date, admission_with, birthdate, city, contact_no, course, father_name, father_no, is_approved, pincode, qualification, registration_date, franchises_id, created_at, full_name, is_exam_attended, is_review, is_direct_added FROM students WHERE is_exam_attended=true AND franchises_id = ?`, body.franchises_id, function (err, result) {
         if (err) {
             res.json({
                 status: false,
@@ -151,7 +151,7 @@ router.post('/getStudents_byFranchises', (req, res) => {
                 } else {
                     const startlingLimit = (page - 1) * resultsPerPage;
                     //   sql = `SELECT * FROM students`;
-                    connection.query(`SELECT * FROM students WHERE is_exam_attended=true AND franchises_id = ?  LIMIT ${startlingLimit},${resultsPerPage}`, body.franchises_id, function (err, result) {
+                    connection.query(`SELECT id, email, password, student_name, surname, address, gender, admission_date, admission_with, birthdate, city, contact_no, course, father_name, father_no, is_approved, pincode, qualification, registration_date, franchises_id, created_at, full_name, is_exam_attended, is_review, is_direct_added FROM students  WHERE is_exam_attended=true AND franchises_id = ?  LIMIT ${startlingLimit},${resultsPerPage}`, body.franchises_id, function (err, result) {
 
                         if (err) {
                             console.log('line 503', err)
@@ -465,53 +465,53 @@ router.post('/pagination_getNew_students', (req, res) => {
                 message: err,
             });
         } else {
-            if (result) {
-                const resultsPerPage = 10;
-                const numOfResults = result.length;
-                const numberOfPages = Math.ceil(numOfResults / resultsPerPage);
-                let page = req.query.page ? Number(req.query.page) : 1;
-                if (page > numberOfPages) {
-                    console.log('line 484', err)
-                    res.json({
-                        status: false,
-                        message: "No more data",
-                    });
-                } else if (page < 1) {
-                    console.log('line 490', err)
+            // if (result) {
+            //     const resultsPerPage = 10;
+            //     const numOfResults = result.length;
+            //     const numberOfPages = Math.ceil(numOfResults / resultsPerPage);
+            //     let page = req.query.page ? Number(req.query.page) : 1;
+            //     if (page > numberOfPages) {
+            //         console.log('line 484', err)
+            //         res.json({
+            //             status: false,
+            //             message: "No more data",
+            //         });
+            //     } else if (page < 1) {
+            //         console.log('line 490', err)
+            //         res.json({
+            //             status: false,
+            //             message: "No more data",
+            //         });
+            //     } else {
+            //         const startlingLimit = (page - 1) * resultsPerPage;
+            //   sql = `SELECT * FROM students`;
+            connection.query(`SELECT id, email, password, student_name, surname, address, gender, admission_date, admission_with, birthdate, city, contact_no, image, course, father_name, father_no, is_approved, pincode, qualification, registration_date, franchises_id, created_at, full_name, is_exam_attended, is_review, is_direct_added FROM students WHERE is_approved IS NULL AND franchises_id=?`, body.franchises_id, function (err, result) {
+
+                if (err) {
+                    console.log('line 503', err)
                     res.json({
                         status: false,
                         message: "No more data",
                     });
                 } else {
-                    const startlingLimit = (page - 1) * resultsPerPage;
-                    //   sql = `SELECT * FROM students`;
-                    connection.query(`SELECT id, email, password, student_name, surname, address, gender, admission_date, admission_with, birthdate, city, contact_no, course, father_name, father_no, is_approved, pincode, qualification, registration_date, franchises_id, created_at, full_name, is_exam_attended, is_review, is_direct_added FROM students WHERE is_approved IS NULL AND franchises_id=?  LIMIT ${startlingLimit},${resultsPerPage}`, body.franchises_id, function (err, result) {
-
-                        if (err) {
-                            console.log('line 503', err)
-                            res.json({
-                                status: false,
-                                message: "No more data",
-                            });
-                        } else {
-                            if (result) {
-                                let iterator = (page - 5) < 1 ? 1 : page - 5;
-                                let endingLink = (iterator + 9) <= numberOfPages ? (iterator + 9) : page + (numberOfPages);
-                                if (endingLink < (page + 4)) {
-                                    iterator -= (page + 4) - numberOfPages;
-                                }
-                                // res.render('index',{data:result,page,iterator,endingLink,numberOfPages});
-                                res.json({
-                                    status: true,
-                                    message: "got",
-                                    data: result
-                                });
-                            }
-                        }
-
-                    })
+                    // if (result) {
+                    //     let iterator = (page - 5) < 1 ? 1 : page - 5;
+                    //     let endingLink = (iterator + 9) <= numberOfPages ? (iterator + 9) : page + (numberOfPages);
+                    //     if (endingLink < (page + 4)) {
+                    //         iterator -= (page + 4) - numberOfPages;
+                    //     }
+                    // res.render('index',{data:result,page,iterator,endingLink,numberOfPages});
+                    res.json({
+                        status: true,
+                        message: "got",
+                        data: result
+                    });
+                    // }
                 }
-            }
+
+            })
+            //     }
+            // }
         }
     })
 })
@@ -530,54 +530,54 @@ router.post('/pagination_getApproved_students', (req, res) => {
                 message: err,
             });
         } else {
-            if (result) {
-                const resultsPerPage = body.count ? body.count : 5;
-                const numOfResults = result.length;
-                const numberOfPages = Math.ceil(numOfResults / resultsPerPage);
-                let page = req.query.page ? Number(req.query.page) : 1;
-                if (page > numberOfPages) {
-                    console.log('line 484', err)
+            // if (result) {
+            //     const resultsPerPage = body.count ? body.count : 5;
+            //     const numOfResults = result.length;
+            //     const numberOfPages = Math.ceil(numOfResults / resultsPerPage);
+            //     let page = req.query.page ? Number(req.query.page) : 1;
+            //     if (page > numberOfPages) {
+            //         console.log('line 484', err)
+            //         res.json({
+            //             status: false,
+            //             message: "No more data",
+            //         });
+            //     } else if (page < 1) {
+            //         console.log('line 490', err)
+            //         res.json({
+            //             status: false,
+            //             message: "No more data",
+            //         });
+            //     } else {
+            //         const startlingLimit = (page - 1) * resultsPerPage;
+            //   sql = `SELECT * FROM students`;
+            //  connection.query(`SELECT * FROM students WHERE is_approved=true AND franchises_id=?  LIMIT ${startlingLimit},${resultsPerPage}`, body.franchises_id, function (err, result) {
+            connection.query(`SELECT id, email, password, student_name, surname, address, gender, image, admission_date, admission_with, birthdate, city, contact_no, course, father_name, father_no, is_approved, pincode, qualification, registration_date, franchises_id, created_at, full_name, is_exam_attended, is_review, is_direct_added FROM students WHERE is_approved=true AND franchises_id=?`, body.franchises_id, function (err, result) {
+
+                if (err) {
+                    console.log('line 503', err)
                     res.json({
                         status: false,
-                        message: "No more data",
-                    });
-                } else if (page < 1) {
-                    console.log('line 490', err)
-                    res.json({
-                        status: false,
-                        message: "No more data",
+                        message: err,
                     });
                 } else {
-                    const startlingLimit = (page - 1) * resultsPerPage;
-                    //   sql = `SELECT * FROM students`;
-                    //  connection.query(`SELECT * FROM students WHERE is_approved=true AND franchises_id=?  LIMIT ${startlingLimit},${resultsPerPage}`, body.franchises_id, function (err, result) {
-                    connection.query(`SELECT id, email, password, student_name, surname, address, gender, admission_date, admission_with, birthdate, city, contact_no, course, father_name, father_no, is_approved, pincode, qualification, registration_date, franchises_id, created_at, full_name, is_exam_attended, is_review, is_direct_added FROM students WHERE is_approved=true AND franchises_id=? LIMIT ${startlingLimit},${resultsPerPage}`, body.franchises_id, function (err, result) {
-
-                        if (err) {
-                            console.log('line 503', err)
-                            res.json({
-                                status: false,
-                                message: err,
-                            });
-                        } else {
-                            if (result) {
-                                let iterator = (page - 5) < 1 ? 1 : page - 5;
-                                let endingLink = (iterator + 9) <= numberOfPages ? (iterator + 9) : page + (numberOfPages);
-                                if (endingLink < (page + 4)) {
-                                    iterator -= (page + 4) - numberOfPages;
-                                }
-                                // res.render('index',{data:result,page,iterator,endingLink,numberOfPages});
-                                res.json({
-                                    status: true,
-                                    message: "got",
-                                    data: result
-                                });
-                            }
-                        }
-
-                    })
+                    // if (result) {
+                    //     let iterator = (page - 5) < 1 ? 1 : page - 5;
+                    //     let endingLink = (iterator + 9) <= numberOfPages ? (iterator + 9) : page + (numberOfPages);
+                    //     if (endingLink < (page + 4)) {
+                    //         iterator -= (page + 4) - numberOfPages;
+                    //     }
+                    // res.render('index',{data:result,page,iterator,endingLink,numberOfPages});
+                    res.json({
+                        status: true,
+                        message: "got",
+                        data: result
+                    });
+                    // }
                 }
-            }
+
+            })
+            // }
+            // }
         }
     })
 })
@@ -597,53 +597,53 @@ router.post('/pagination_getDisapproved_students', (req, res) => {
                 message: err,
             });
         } else {
-            if (result) {
-                const resultsPerPage = 10;
-                const numOfResults = result.length;
-                const numberOfPages = Math.ceil(numOfResults / resultsPerPage);
-                let page = req.query.page ? Number(req.query.page) : 1;
-                if (page > numberOfPages) {
-                    console.log('line 484', err)
-                    res.json({
-                        status: false,
-                        message: "No more data",
-                    });
-                } else if (page < 1) {
-                    console.log('line 490', err)
+            // if (result) {
+            //     const resultsPerPage = 10;
+            //     const numOfResults = result.length;
+            //     const numberOfPages = Math.ceil(numOfResults / resultsPerPage);
+            //     let page = req.query.page ? Number(req.query.page) : 1;
+            //     if (page > numberOfPages) {
+            //         console.log('line 484', err)
+            //         res.json({
+            //             status: false,
+            //             message: "No more data",
+            //         });
+            //     } else if (page < 1) {
+            //         console.log('line 490', err)
+            //         res.json({
+            //             status: false,
+            //             message: "No more data",
+            //         });
+            //     } else {
+            //         const startlingLimit = (page - 1) * resultsPerPage;
+            //   sql = `SELECT * FROM students`;
+            connection.query(`SELECT id, email, password, student_name, surname, address, gender, admission_date, admission_with, birthdate, city, contact_no, course, father_name, father_no, is_approved, pincode, qualification, registration_date, franchises_id, image, created_at, full_name, is_exam_attended, is_review, is_direct_added FROM students WHERE is_approved=false AND franchises_id=?`, body.franchises_id, function (err, result) {
+
+                if (err) {
+                    console.log('line 503', err)
                     res.json({
                         status: false,
                         message: "No more data",
                     });
                 } else {
-                    const startlingLimit = (page - 1) * resultsPerPage;
-                    //   sql = `SELECT * FROM students`;
-                    connection.query(`SELECT id, email, password, student_name, surname, address, gender, admission_date, admission_with, birthdate, city, contact_no, course, father_name, father_no, is_approved, pincode, qualification, registration_date, franchises_id, created_at, full_name, is_exam_attended, is_review, is_direct_added FROM students WHERE is_approved=false AND franchises_id=?  LIMIT ${startlingLimit},${resultsPerPage}`, body.franchises_id, function (err, result) {
-
-                        if (err) {
-                            console.log('line 503', err)
-                            res.json({
-                                status: false,
-                                message: "No more data",
-                            });
-                        } else {
-                            if (result) {
-                                let iterator = (page - 5) < 1 ? 1 : page - 5;
-                                let endingLink = (iterator + 9) <= numberOfPages ? (iterator + 9) : page + (numberOfPages);
-                                if (endingLink < (page + 4)) {
-                                    iterator -= (page + 4) - numberOfPages;
-                                }
-                                // res.render('index',{data:result,page,iterator,endingLink,numberOfPages});
-                                res.json({
-                                    status: true,
-                                    message: "got",
-                                    data: result
-                                });
-                            }
-                        }
-
-                    })
+                    // if (result) {
+                    //     let iterator = (page - 5) < 1 ? 1 : page - 5;
+                    //     let endingLink = (iterator + 9) <= numberOfPages ? (iterator + 9) : page + (numberOfPages);
+                    //     if (endingLink < (page + 4)) {
+                    //         iterator -= (page + 4) - numberOfPages;
+                    //     }
+                    // res.render('index',{data:result,page,iterator,endingLink,numberOfPages});
+                    res.json({
+                        status: true,
+                        message: "got",
+                        data: result
+                    });
+                    // }
                 }
-            }
+
+            })
+            //     }
+            // }
         }
     })
 })
@@ -678,7 +678,6 @@ router.get('/get_admin_dashboard', (req, res) => {
             })
         }
     })
-
 })
 
 //! Partner dashboard api 
@@ -765,13 +764,12 @@ router.post('/get_single_student', (req, res) => {
 //! searchbar api of new student name 
 router.post('/search_new_student', (req, res) => {
     let body = req.body;
-  
-    connection.query(`SELECT * FROM students WHERE is_approved IS NULL AND student_name LIKE '${body.string}'  AND franchises_id=?  OR id LIKE '${body.string}'  AND is_approved IS NULL `,body.franchise_id,  function (err, result) {
+
+    connection.query(`SELECT * FROM students WHERE is_approved IS NULL AND student_name LIKE '${body.string}'  AND franchises_id=?  OR id LIKE '${body.string}'  AND is_approved IS NULL `, body.franchise_id, function (err, result) {
         if (err) throw err;
-        var data=[];
-       // console.log(result)
-        for(i=0;i<result.length;i++)
-        {
+        var data = [];
+        // console.log(result)
+        for (i = 0; i < result.length; i++) {
             data.push(result[i]);
         }
         res.json({
@@ -784,13 +782,12 @@ router.post('/search_new_student', (req, res) => {
 //! searchbar api of approve student name 
 router.post('/search_approved_student', (req, res) => {
     let body = req.body;
-  
-    connection.query(`SELECT * FROM students WHERE is_approved=true AND student_name LIKE '${body.string}'  AND franchises_id=?  OR id LIKE '${body.string}'  AND is_approved=true `,body.franchise_id,  function (err, result) {
+
+    connection.query(`SELECT * FROM students WHERE is_approved=true AND student_name LIKE '${body.string}'  AND franchises_id=?  OR id LIKE '${body.string}'  AND is_approved=true `, body.franchise_id, function (err, result) {
         if (err) throw err;
-        var data=[];
-       // console.log(result)
-        for(i=0;i<result.length;i++)
-        {
+        var data = [];
+        // console.log(result)
+        for (i = 0; i < result.length; i++) {
             data.push(result[i]);
         }
         res.json({
@@ -804,13 +801,12 @@ router.post('/search_approved_student', (req, res) => {
 //! searchbar api of disapprove student name 
 router.post('/search_disapproved_student', (req, res) => {
     let body = req.body;
-  
-    connection.query(`SELECT * FROM students WHERE is_approved=false AND student_name LIKE '${body.string}'  AND franchises_id=?  OR id LIKE '${body.string}'  AND is_approved=false `,body.franchise_id,  function (err, result) {
+
+    connection.query(`SELECT * FROM students WHERE is_approved=false AND student_name LIKE '${body.string}'  AND franchises_id=?  OR id LIKE '${body.string}'  AND is_approved=false `, body.franchise_id, function (err, result) {
         if (err) throw err;
-        var data=[];
-       // console.log(result)
-        for(i=0;i<result.length;i++)
-        {
+        var data = [];
+        // console.log(result)
+        for (i = 0; i < result.length; i++) {
             data.push(result[i]);
         }
         res.json({
@@ -824,13 +820,12 @@ router.post('/search_disapproved_student', (req, res) => {
 //! searchbar api of test result students 
 router.post('/search_test_result', (req, res) => {
     let body = req.body;
-  
-    connection.query(`SELECT * FROM students WHERE is_exam_attended=true AND student_name LIKE '${body.string}'  AND franchises_id=?  OR id LIKE '${body.string}'  AND is_exam_attended=true `,body.franchise_id,  function (err, result) {
+
+    connection.query(`SELECT * FROM students WHERE is_exam_attended=true AND student_name LIKE '${body.string}'  AND franchises_id=?  OR id LIKE '${body.string}'  AND is_exam_attended=true `, body.franchise_id, function (err, result) {
         if (err) throw err;
-        var data=[];
-       // console.log(result)
-        for(i=0;i<result.length;i++)
-        {
+        var data = [];
+        // console.log(result)
+        for (i = 0; i < result.length; i++) {
             data.push(result[i]);
         }
         res.json({
@@ -840,4 +835,70 @@ router.post('/search_test_result', (req, res) => {
         });
     })
 })
+
+//! get new students by all franchises
+router.get('/pagination_getNew_students_byAll_franchises', (req, res) => {
+    let body = req.body;
+    //console.log(body)
+    connection.query('SELECT * FROM students WHERE is_approved IS NULL', function (err, result) {
+        // connection.query('SELECT id, email, password, student_name, surname, address, gender, admission_date, admission_with, birthdate, city, contact_no, course, father_name, father_no, is_approved, pincode, qualification, registration_date, franchises_id, created_at, full_name, is_exam_attended, is_review, is_direct_added FROM students WHERE is_approved IS NULL', function (err, result) {
+
+        if (err) {
+            console.log('line 472', err)
+            res.json({
+                status: false,
+                message: err,
+            });
+        } else {
+            // if (result) {
+            //     const resultsPerPage = 10;
+            //     const numOfResults = result.length;
+            //     const numberOfPages = Math.ceil(numOfResults / resultsPerPage);
+            //     let page = req.query.page ? Number(req.query.page) : 1;
+            //     if (page > numberOfPages) {
+            //         console.log('line 484', err)
+            //         res.json({
+            //             status: false,
+            //             message: "No more data",
+            //         });
+            //     } else if (page < 1) {
+            //         console.log('line 490', err)
+            //         res.json({
+            //             status: false,
+            //             message: "No more data",
+            //         });
+            //     } else {
+            //         const startlingLimit = (page - 1) * resultsPerPage;
+            //   sql = `SELECT * FROM students`;
+            connection.query(`SELECT * FROM students WHERE is_approved IS NULL`, function (err, result) {
+
+                if (err) {
+                    console.log('line 503', err)
+                    res.json({
+                        status: false,
+                        message: "No more data",
+                    });
+                } else {
+                    // if (result) {
+                    //     let iterator = (page - 5) < 1 ? 1 : page - 5;
+                    //     let endingLink = (iterator + 9) <= numberOfPages ? (iterator + 9) : page + (numberOfPages);
+                    //     if (endingLink < (page + 4)) {
+                    //         iterator -= (page + 4) - numberOfPages;
+                    //     }
+                    // res.render('index',{data:result,page,iterator,endingLink,numberOfPages});
+                    res.json({
+                        status: true,
+                        message: "got",
+                        data: result
+                    });
+                    // }
+                }
+
+            })
+            //     }
+            // }
+        }
+    })
+})
+
 module.exports = router;

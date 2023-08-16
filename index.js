@@ -19,7 +19,8 @@ app.use(cors({
 app.get('/',(req,res)=>{
   
     res.json({
-        status:true
+        status:true,
+        message:'API working fine.'
     });
 });
 
@@ -30,6 +31,7 @@ app.use(bodyParser.urlencoded({
   limit: '50mb',
   extended: true,
 }))
+
 
 
 
@@ -50,10 +52,6 @@ app.use('/api/questions',require('./routes/questions'));
 app.use('/api/answers',require('./routes/answers'));
 
 app.use('/api/results',require('./routes/results'));
-
-app.use('/api/banner',require('./routes/banner'));
-
-app.use('/api/gallery',require('./routes/gallery'));
 
 app.use('/api/inquiry_franchises',require('./routes/inquiry_franchises'));
 
